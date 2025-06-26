@@ -2,25 +2,25 @@
 /**
  * @fileOverview This file defines a Genkit flow to generate a doctor visit prompt based on medication adherence, observations, and health details.
  *
- * - generateDoctorVisitPrompt - A function that generates the doctor visit prompt.
- * - GenerateDoctorVisitPromptInput - The input type for the generateDoctorVisitPrompt function.
- * - GenerateDoctorVisitPromptOutput - The return type for the generateDoctorVisitPrompt function.
+ * - generateDoctorVisitPrompt - Uma função que gera o prompt para a visita ao médico.
+ * - GenerateDoctorVisitPromptInput - O tipo de entrada para a função generateDoctorVisitPrompt.
+ * - GenerateDoctorVisitPromptOutput - O tipo de retorno para a função generateDoctorVisitPrompt.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateDoctorVisitPromptInputSchema = z.object({
-  medicationAdherence: z.string().describe('Summary of medication adherence.'),
-  observations: z.string().describe('User observations about their health and medications.'),
-  healthDetails: z.string().describe('Important health-related details.'),
+  medicationAdherence: z.string().describe('Resumo da adesão à medicação.'),
+  observations: z.string().describe('Observações do usuário sobre sua saúde e medicamentos.'),
+  healthDetails: z.string().describe('Detalhes importantes relacionados à saúde.'),
 });
 export type GenerateDoctorVisitPromptInput = z.infer<
   typeof GenerateDoctorVisitPromptInputSchema
 >;
 
 const GenerateDoctorVisitPromptOutputSchema = z.object({
-  prompt: z.string().describe('The generated prompt for the doctor visit.'),
+  prompt: z.string().describe('O prompt gerado para a visita ao médico.'),
 });
 export type GenerateDoctorVisitPromptOutput = z.infer<
   typeof GenerateDoctorVisitPromptOutputSchema
@@ -36,15 +36,15 @@ const prompt = ai.definePrompt({
   name: 'generateDoctorVisitPrompt',
   input: {schema: GenerateDoctorVisitPromptInputSchema},
   output: {schema: GenerateDoctorVisitPromptOutputSchema},
-  prompt: `Here's a summary of the patient's medication adherence, observations, and important health details. Use this information to guide the clinical conversation with the patient.
+  prompt: `Aqui está um resumo da adesão do paciente à medicação, suas observações e detalhes importantes de saúde. Use estas informações para guiar a conversa clínica com o paciente.
 
-Medication Adherence: {{{medicationAdherence}}}
+Adesão à Medicação: {{{medicationAdherence}}}
 
-Observations: {{{observations}}}
+Observações: {{{observations}}}
 
-Health Details: {{{healthDetails}}}
+Detalhes de Saúde: {{{healthDetails}}}
 
-Based on this information, what questions should I ask the patient to best understand their current health status and medication needs? Please format your response as a list of questions.`,
+Com base nestas informações, que perguntas devo fazer ao paciente para entender melhor seu estado de saúde atual e suas necessidades de medicação? Por favor, formate sua resposta como uma lista de perguntas.`,
 });
 
 const generateDoctorVisitPromptFlow = ai.defineFlow(

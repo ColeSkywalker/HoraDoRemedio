@@ -10,6 +10,17 @@ import { format, isToday } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
+const translateStatus = (status: DoseStatus) => {
+  switch (status) {
+    case "taken":
+      return "Tomado";
+    case "skipped":
+      return "Omitido";
+    case "pending":
+      return "Pendente";
+  }
+};
+
 export function DashboardClient() {
   const { doses, medications, updateDoseStatus } = usePillPalStore();
   const { toast } = useToast();
@@ -26,8 +37,8 @@ export function DashboardClient() {
     updateDoseStatus(dose.id, status);
     const med = getMedicationById(dose.medicationId);
     toast({
-      title: "Dose Updated",
-      description: `${med?.name} marked as ${status}.`,
+      title: "Dose Atualizada",
+      description: `${med?.name} marcado como ${translateStatus(status).toLowerCase()}.`,
       duration: 3000,
     });
   };
@@ -36,8 +47,8 @@ export function DashboardClient() {
     return (
       <div className="flex flex-col items-center justify-center text-center p-12 border-2 border-dashed rounded-lg">
         <Pill className="h-16 w-16 text-muted-foreground mb-4" />
-        <h2 className="text-2xl font-bold font-headline mb-2">All Clear for Today!</h2>
-        <p className="text-muted-foreground">You have no medications scheduled for the rest of the day.</p>
+        <h2 className="text-2xl font-bold font-headline mb-2">Tudo limpo por hoje!</h2>
+        <p className="text-muted-foreground">Você não tem medicamentos agendados para o resto do dia.</p>
       </div>
     );
   }
@@ -49,7 +60,7 @@ export function DashboardClient() {
     <div className="space-y-8">
       {upcomingDoses.length > 0 && (
         <div>
-            <h2 className="text-2xl font-bold font-headline mb-4">Upcoming Doses</h2>
+            <h2 className="text-2xl font-bold font-headline mb-4">Próximas Doses</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {upcomingDoses.map((dose) => {
                 const med = getMedicationById(dose.medicationId);
@@ -66,15 +77,15 @@ export function DashboardClient() {
                     <CardContent>
                     <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        <span>Scheduled for {format(dose.scheduledTime, "p")}</span>
+                        <span>Agendado para {format(dose.scheduledTime, "p")}</span>
                     </div>
                     </CardContent>
                     <CardFooter className="flex justify-end gap-2">
                     <Button variant="outline" size="sm" onClick={() => handleUpdateStatus(dose, "skipped")}>
-                        <X className="mr-2 h-4 w-4" /> Skip
+                        <X className="mr-2 h-4 w-4" /> Omitir
                     </Button>
                     <Button size="sm" onClick={() => handleUpdateStatus(dose, "taken")}>
-                        <Check className="mr-2 h-4 w-4" /> Take
+                        <Check className="mr-2 h-4 w-4" /> Tomar
                     </Button>
                     </CardFooter>
                 </Card>
@@ -86,7 +97,7 @@ export function DashboardClient() {
 
       {pastDoses.length > 0 && (
          <div>
-            <h2 className="text-2xl font-bold font-headline mb-4">Today's History</h2>
+            <h2 className="text-2xl font-bold font-headline mb-4">Histórico de Hoje</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pastDoses.map((dose) => {
                 const med = getMedicationById(dose.medicationId);
@@ -100,7 +111,7 @@ export function DashboardClient() {
                             {med.name}
                         </div>
                         <Badge variant={dose.status === "taken" ? "default" : "destructive"} className={cn(dose.status === 'taken' && "bg-green-600")}>
-                        {dose.status}
+                        {translateStatus(dose.status)}
                         </Badge>
                     </CardTitle>
                     <CardDescription>{med.dosage}</CardDescription>

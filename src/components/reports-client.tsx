@@ -18,8 +18,8 @@ export function ReportsClient() {
   const adherenceData = getAdherence();
   
   const chartData = [
-    { name: "Taken", value: adherenceData.taken, fill: "hsl(var(--chart-1))" },
-    { name: "Skipped", value: adherenceData.skipped, fill: "hsl(var(--chart-2))" },
+    { name: "Tomadas", value: adherenceData.taken, fill: "hsl(var(--chart-1))" },
+    { name: "Omitidas", value: adherenceData.skipped, fill: "hsl(var(--chart-2))" },
   ];
 
   return (
@@ -27,8 +27,8 @@ export function ReportsClient() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Adherence Rate</CardTitle>
-            <CardDescription>Based on doses in the past.</CardDescription>
+            <CardTitle>Taxa de Adesão</CardTitle>
+            <CardDescription>Com base nas doses passadas.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold font-headline text-primary">
@@ -38,8 +38,8 @@ export function ReportsClient() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Doses Taken</CardTitle>
-            <CardDescription>Total doses marked as taken.</CardDescription>
+            <CardTitle>Doses Tomadas</CardTitle>
+            <CardDescription>Total de doses marcadas como tomadas.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold font-headline">{adherenceData.taken}</p>
@@ -47,8 +47,8 @@ export function ReportsClient() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Doses Skipped</CardTitle>
-            <CardDescription>Total doses marked as skipped.</CardDescription>
+            <CardTitle>Doses Omitidas</CardTitle>
+            <CardDescription>Total de doses marcadas como omitidas.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold font-headline">{adherenceData.skipped}</p>
@@ -58,8 +58,8 @@ export function ReportsClient() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Adherence Summary</CardTitle>
-          <CardDescription>Visual summary of taken vs. skipped doses.</CardDescription>
+          <CardTitle>Resumo da Adesão</CardTitle>
+          <CardDescription>Resumo visual de doses tomadas vs. omitidas.</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
@@ -90,16 +90,16 @@ export function ReportsClient() {
       
       <Card>
         <CardHeader>
-            <CardTitle>Medication List</CardTitle>
-            <CardDescription>A complete list of your registered medications.</CardDescription>
+            <CardTitle>Lista de Medicamentos</CardTitle>
+            <CardDescription>Uma lista completa dos seus medicamentos registrados.</CardDescription>
         </CardHeader>
         <CardContent>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Dosage</TableHead>
-                        <TableHead>Frequency</TableHead>
+                        <TableHead>Nome</TableHead>
+                        <TableHead>Dosagem</TableHead>
+                        <TableHead>Frequência</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -107,7 +107,7 @@ export function ReportsClient() {
                         <TableRow key={med.id}>
                             <TableCell className="font-medium">{med.name}</TableCell>
                             <TableCell>{med.dosage}</TableCell>
-                            <TableCell>Every {med.frequency} hours</TableCell>
+                            <TableCell>A cada {med.frequency} horas</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -38,11 +38,11 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 const medicationSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  dosage: z.string().min(1, "Dosage is required."),
+  name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
+  dosage: z.string().min(1, "A dosagem é obrigatória."),
   observations: z.string().optional(),
   frequency: z.enum(["8", "12", "24"]),
-  startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:mm)."),
+  startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:mm)."),
 });
 
 export function MedicationsClient() {
@@ -68,8 +68,8 @@ export function MedicationsClient() {
       observations: values.observations || "",
     });
     toast({
-      title: "Medication Added",
-      description: `${values.name} has been added to your list.`,
+      title: "Medicamento Adicionado",
+      description: `${values.name} foi adicionado à sua lista.`,
     });
     form.reset();
     setIsDialogOpen(false);
@@ -81,14 +81,14 @@ export function MedicationsClient() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button>
-              <Plus className="mr-2 h-4 w-4" /> Add Medication
+              <Plus className="mr-2 h-4 w-4" /> Adicionar Medicamento
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add New Medication</DialogTitle>
+              <DialogTitle>Adicionar Novo Medicamento</DialogTitle>
               <DialogDescription>
-                Fill in the details of your new medication.
+                Preencha os detalhes do seu novo medicamento.
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -98,9 +98,9 @@ export function MedicationsClient() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Medication Name</FormLabel>
+                      <FormLabel>Nome do Medicamento</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Paracetamol" {...field} />
+                        <Input placeholder="Ex: Paracetamol" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -111,9 +111,9 @@ export function MedicationsClient() {
                   name="dosage"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Dosage</FormLabel>
+                      <FormLabel>Dosagem</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., 500mg" {...field} />
+                        <Input placeholder="Ex: 500mg" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -125,17 +125,17 @@ export function MedicationsClient() {
                     name="frequency"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Frequency</FormLabel>
+                        <FormLabel>Frequência</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select frequency" />
+                                <SelectValue placeholder="Selecione a frequência" />
                             </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                            <SelectItem value="8">Every 8 hours</SelectItem>
-                            <SelectItem value="12">Every 12 hours</SelectItem>
-                            <SelectItem value="24">Every 24 hours</SelectItem>
+                            <SelectItem value="8">A cada 8 horas</SelectItem>
+                            <SelectItem value="12">A cada 12 horas</SelectItem>
+                            <SelectItem value="24">A cada 24 horas</SelectItem>
                             </SelectContent>
                         </Select>
                         <FormMessage />
@@ -147,7 +147,7 @@ export function MedicationsClient() {
                     name="startTime"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>First Dose Time</FormLabel>
+                        <FormLabel>Horário da Primeira Dose</FormLabel>
                         <FormControl>
                             <Input type="time" {...field} />
                         </FormControl>
@@ -161,9 +161,9 @@ export function MedicationsClient() {
                   name="observations"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Observations</FormLabel>
+                      <FormLabel>Observações</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="e.g., Take with a meal" {...field} />
+                        <Textarea placeholder="Ex: Tomar com uma refeição" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -171,9 +171,9 @@ export function MedicationsClient() {
                 />
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button type="button" variant="secondary">Cancel</Button>
+                    <Button type="button" variant="secondary">Cancelar</Button>
                   </DialogClose>
-                  <Button type="submit">Add Medication</Button>
+                  <Button type="submit">Adicionar Medicamento</Button>
                 </DialogFooter>
               </form>
             </Form>
@@ -194,7 +194,7 @@ export function MedicationsClient() {
               <CardContent className="space-y-2">
                 <div className="flex items-center text-sm text-muted-foreground">
                     <Clock className="mr-2 h-4 w-4" />
-                    <span>Every {med.frequency} hours, starting at {med.startTime}</span>
+                    <span>A cada {med.frequency} horas, começando às {med.startTime}</span>
                 </div>
                 {med.observations && (
                     <div className="flex items-start text-sm text-muted-foreground">
@@ -209,9 +209,9 @@ export function MedicationsClient() {
       ) : (
         <div className="text-center py-12 border-2 border-dashed rounded-lg">
             <Pill className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-2 text-lg font-medium">No medications found</h3>
+            <h3 className="mt-2 text-lg font-medium">Nenhum medicamento encontrado</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-                Click "Add Medication" to get started.
+                Clique em "Adicionar Medicamento" para começar.
             </p>
         </div>
       )}

@@ -5,7 +5,7 @@ export default function DashboardPage() {
   return (
     <>
       <PageHeader>
-        <PageHeaderTitle>Dashboard</PageHeaderTitle>
+        <PageHeaderTitle>Painel</PageHeaderTitle>
       </PageHeader>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <DashboardClient />

@@ -28,7 +28,7 @@ export function DoctorVisitClient({ generatePromptAction }: DoctorVisitClientPro
     setGeneratedPrompt("");
 
     const adherence = getAdherence();
-    const medicationAdherence = `Adherence rate: ${adherence.adherenceRate}%. Taken: ${adherence.taken} doses, Skipped: ${adherence.skipped} doses.`;
+    const medicationAdherence = `Taxa de adesão: ${adherence.adherenceRate}%. Doses tomadas: ${adherence.taken}, Doses não tomadas: ${adherence.skipped}.`;
     const observations = medications.map(m => `- ${m.name}: ${m.observations}`).join('\n');
     
     try {
@@ -42,16 +42,16 @@ export function DoctorVisitClient({ generatePromptAction }: DoctorVisitClientPro
         } else {
             toast({
                 variant: "destructive",
-                title: "Error",
-                description: "Failed to generate prompt. The result was empty.",
+                title: "Erro",
+                description: "Falha ao gerar o prompt. O resultado estava vazio.",
             });
         }
     } catch (error) {
         console.error(error);
         toast({
             variant: "destructive",
-            title: "Error",
-            description: "An error occurred while generating the prompt.",
+            title: "Erro",
+            description: "Ocorreu um erro ao gerar o prompt.",
         });
     } finally {
         setIsLoading(false);
@@ -70,17 +70,17 @@ export function DoctorVisitClient({ generatePromptAction }: DoctorVisitClientPro
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Prepare for Your Visit</CardTitle>
+          <CardTitle>Prepare-se para a sua consulta</CardTitle>
           <CardDescription>
-            Generate a list of questions to discuss with your doctor based on your medication adherence and observations.
+            Gere uma lista de perguntas para discutir com o seu médico, com base na sua adesão à medicação e observações.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="health-details">Additional Health Details</Label>
+            <Label htmlFor="health-details">Detalhes de Saúde Adicionais</Label>
             <Textarea
               id="health-details"
-              placeholder="e.g., Any new symptoms, side effects, or concerns you want to discuss..."
+              placeholder="Ex: novos sintomas, efeitos colaterais ou preocupações que você queira discutir..."
               value={healthDetails}
               onChange={(e) => setHealthDetails(e.target.value)}
               className="mt-1"
@@ -92,21 +92,21 @@ export function DoctorVisitClient({ generatePromptAction }: DoctorVisitClientPro
             ) : (
               <Sparkles className="mr-2 h-4 w-4" />
             )}
-            Generate Questions
+            Gerar Perguntas
           </Button>
         </CardContent>
       </Card>
       
       <Card className="min-h-[300px]">
         <CardHeader>
-          <CardTitle>Your Discussion Points</CardTitle>
-          <CardDescription>Use these questions to guide your conversation with the doctor.</CardDescription>
+          <CardTitle>Seus Pontos para Discussão</CardTitle>
+          <CardDescription>Use estas perguntas para guiar a sua conversa com o médico.</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading && (
             <div className="flex flex-col items-center justify-center text-center p-8">
                 <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
-                <p className="text-muted-foreground">Generating your personalized questions...</p>
+                <p className="text-muted-foreground">A gerar as suas perguntas personalizadas...</p>
             </div>
           )}
           {generatedPrompt && !isLoading && (
@@ -117,7 +117,7 @@ export function DoctorVisitClient({ generatePromptAction }: DoctorVisitClientPro
           {!generatedPrompt && !isLoading && (
             <div className="flex flex-col items-center justify-center text-center p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground mb-4"/>
-                <p className="text-muted-foreground">Your generated questions will appear here.</p>
+                <p className="text-muted-foreground">As suas perguntas geradas aparecerão aqui.</p>
             </div>
           )}
         </CardContent>

@@ -40,10 +40,10 @@ export function SiteSidebar() {
   const pathname = usePathname();
 
   const menuItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/medications", label: "Medications", icon: Pill },
-    { href: "/reports", label: "Reports", icon: BarChart3 },
-    { href: "/doctor-visit", label: "Doctor Visit", icon: Stethoscope },
+    { href: "/", label: "Painel", icon: LayoutDashboard },
+    { href: "/medications", label: "Medicamentos", icon: Pill },
+    { href: "/reports", label: "Relatórios", icon: BarChart3 },
+    { href: "/doctor-visit", label: "Visita ao Médico", icon: Stethoscope },
   ];
 
   return (

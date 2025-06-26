@@ -7,7 +7,7 @@ export default function DoctorVisitPage() {
   return (
     <>
       <PageHeader>
-        <PageHeaderTitle>Doctor Visit Tool</PageHeaderTitle>
+        <PageHeaderTitle>Ferramenta de Visita ao Médico</PageHeaderTitle>
       </PageHeader>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <DoctorVisitClient generatePromptAction={generateDoctorVisitPrompt} />

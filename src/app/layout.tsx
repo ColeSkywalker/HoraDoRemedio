@@ -11,7 +11,7 @@ import { SiteSidebar } from '@/components/site-sidebar';
 
 export const metadata: Metadata = {
   title: 'PillPal',
-  description: 'Your personal medication management assistant.',
+  description: 'Seu assistente pessoal de gerenciamento de medicamentos.',
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
