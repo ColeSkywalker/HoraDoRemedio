@@ -1,14 +1,14 @@
-import { DashboardClient } from "@/components/dashboard-client";
+import { ReportsClient } from "@/components/reports-client";
 import { PageHeader, PageHeaderTitle } from "@/components/page-header";
 
-export default function DashboardPage() {
+export default function ReportsPage() {
   return (
     <>
       <PageHeader>
-        <PageHeaderTitle>Dashboard</PageHeaderTitle>
+        <PageHeaderTitle>Your Reports</PageHeaderTitle>
       </PageHeader>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <DashboardClient />
+        <ReportsClient />
       </div>
     </>
   );
