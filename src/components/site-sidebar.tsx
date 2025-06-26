@@ -48,7 +48,7 @@ export function SiteSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <PillIcon />
-            <h1 className="text-xl font-headline font-bold">PillPal</h1>
+            <h1 className="text-xl font-headline font-bold">Hora do Remédio</h1>
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -71,7 +71,7 @@ export function SiteSidebar() {
       </SidebarContent>
       <SidebarFooter className="group-data-[collapsible=icon]:hidden">
         <div className="text-xs text-muted-foreground text-center p-4">
-            <p>&copy; {new Date().getFullYear()} PillPal</p>
+            <p>&copy; {new Date().getFullYear()} Hora do Remédio</p>
         </div>
       </SidebarFooter>
     </Sidebar>

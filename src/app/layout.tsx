@@ -10,7 +10,7 @@ import {
 import { SiteSidebar } from '@/components/site-sidebar';
 
 export const metadata: Metadata = {
-  title: 'PillPal',
+  title: 'Hora do Remédio',
   description: 'Seu assistente pessoal de gerenciamento de medicamentos.',
 };
 

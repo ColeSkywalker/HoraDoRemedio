@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePillPalStore } from "@/lib/store";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Pill, Clock } from "lucide-react";
+import { Plus, Pill, Clock, FileText } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -35,12 +35,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 const medicationSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
   dosage: z.string().min(1, "A dosagem é obrigatória."),
   frequency: z.enum(["8", "12", "24"]),
   startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:mm)."),
+  observations: z.string().max(200, "As observações devem ter no máximo 200 caracteres.").optional(),
 });
 
 export function MedicationsClient() {
@@ -55,6 +57,7 @@ export function MedicationsClient() {
       dosage: "",
       frequency: "24",
       startTime: "08:00",
+      observations: "",
     },
   });
 
@@ -143,7 +146,7 @@ export function MedicationsClient() {
                     name="startTime"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Horário da Primeira Dose</FormLabel>
+                        <FormLabel>Primeira Dose</FormLabel>
                         <FormControl>
                             <Input type="time" {...field} />
                         </FormControl>
@@ -152,6 +155,22 @@ export function MedicationsClient() {
                     )}
                     />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="observations"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Observações (Opcional)</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Ex: Tomar com o estômago cheio..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button type="button" variant="secondary">Cancelar</Button>
@@ -179,6 +198,12 @@ export function MedicationsClient() {
                     <Clock className="mr-2 h-4 w-4" />
                     <span>A cada {med.frequency} horas, começando às {med.startTime}</span>
                 </div>
+                {med.observations && (
+                  <div className="flex items-start text-sm text-muted-foreground pt-2 border-t mt-2">
+                    <FileText className="mr-2 h-4 w-4 mt-0.5 flex-shrink-0" />
+                    <span className="flex-1">{med.observations}</span>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}

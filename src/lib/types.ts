@@ -6,6 +6,7 @@ export interface Medication {
   dosage: string;
   frequency: Frequency;
   startTime: string; // HH:mm format
+  observations?: string;
 }
 
 export type DoseStatus = "taken" | "skipped" | "pending";
