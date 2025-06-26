@@ -16,7 +16,7 @@ const translateStatus = (status: DoseStatus) => {
     case "taken":
       return "Tomado";
     case "skipped":
-      return "Não Tomado";
+      return "Pulado";
     case "pending":
       return "Pendente";
   }
@@ -117,14 +117,14 @@ export function DashboardClient() {
                     const med = getMedicationById(dose.medicationId);
                     if (!med) return null;
                     return (
-                    <Card key={dose.id} className={cn("opacity-70", dose.status === 'taken' ? 'bg-green-50' : 'bg-red-50')}>
+                    <Card key={dose.id} className={cn("opacity-80", dose.status === 'taken' ? 'bg-success/10' : 'bg-destructive/10')}>
                         <CardHeader>
                         <CardTitle className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Pill className="text-primary"/>
                                 {med.name}
                             </div>
-                            <Badge variant={dose.status === "taken" ? "default" : "destructive"} className={cn(dose.status === 'taken' && "bg-green-600")}>
+                            <Badge variant={dose.status === "taken" ? "success" : "destructive"}>
                             {translateStatus(dose.status)}
                             </Badge>
                         </CardTitle>

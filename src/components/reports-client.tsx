@@ -19,7 +19,7 @@ export function ReportsClient() {
   
   const chartData = [
     { name: "Tomadas", value: adherenceData.taken, fill: "hsl(var(--chart-1))" },
-    { name: "Puladas", value: adherenceData.skipped, fill: "hsl(var(--chart-2))" },
+    { name: "Puladas", value: adherenceData.skipped, fill: "hsl(var(--destructive))" },
   ];
 
   return (

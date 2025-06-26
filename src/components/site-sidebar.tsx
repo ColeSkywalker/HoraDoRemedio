@@ -16,7 +16,7 @@ import {
   Pill,
   BarChart3,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 
 const PillIcon = () => (
   <svg
@@ -69,10 +69,11 @@ export function SiteSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="group-data-[collapsible=icon]:hidden">
-        <div className="text-xs text-muted-foreground text-center p-4">
-            <p>&copy; {new Date().getFullYear()} Hora do Remédio</p>
+      <SidebarFooter className="flex items-center justify-between p-2 group-data-[collapsible=icon]:justify-center">
+        <div className="text-xs text-muted-foreground text-center group-data-[collapsible=icon]:hidden">
+            <p>&copy; {new Date().getFullYear()}</p>
         </div>
+        <ThemeToggle />
       </SidebarFooter>
     </Sidebar>
   );

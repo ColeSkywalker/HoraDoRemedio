@@ -8,6 +8,7 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import { SiteSidebar } from '@/components/site-sidebar';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Hora do Remédio',
@@ -30,17 +31,24 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
-        <PillPalStoreProvider>
-          <SidebarProvider>
-            <div className="relative flex min-h-screen w-full">
-              <SiteSidebar />
-              <SidebarInset className="flex flex-col">
-                {children}
-              </SidebarInset>
-            </div>
-          </SidebarProvider>
-          <Toaster />
-        </PillPalStoreProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <PillPalStoreProvider>
+            <SidebarProvider>
+              <div className="relative flex min-h-screen w-full">
+                <SiteSidebar />
+                <SidebarInset className="flex flex-col">
+                  {children}
+                </SidebarInset>
+              </div>
+            </SidebarProvider>
+            <Toaster />
+          </PillPalStoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
