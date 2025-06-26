@@ -6,9 +6,9 @@ import { add, set } from "date-fns";
 
 // --- Mock Data ---
 const MOCK_MEDICATIONS: Medication[] = [
-  { id: "1", name: "Lisinopril", dosage: "10mg", observations: "Tomar com comida.", frequency: 24, startTime: "08:00" },
-  { id: "2", name: "Metformina", dosage: "500mg", observations: "Sentindo um pouco de tontura depois de tomar.", frequency: 12, startTime: "09:00" },
-  { id: "3", name: "Amoxicilina", dosage: "250mg", observations: "Concluir o tratamento completo.", frequency: 8, startTime: "07:00" },
+  { id: "1", name: "Lisinopril", dosage: "10mg", frequency: 24, startTime: "08:00" },
+  { id: "2", name: "Metformina", dosage: "500mg", frequency: 12, startTime: "09:00" },
+  { id: "3", name: "Amoxicilina", dosage: "250mg", frequency: 8, startTime: "07:00" },
 ];
 
 // --- State and Actions Types ---

@@ -4,7 +4,6 @@ export interface Medication {
   id: string;
   name: string;
   dosage: string;
-  observations: string;
   frequency: Frequency;
   startTime: string; // HH:mm format
 }

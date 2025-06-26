@@ -19,7 +19,7 @@ export function ReportsClient() {
   
   const chartData = [
     { name: "Tomadas", value: adherenceData.taken, fill: "hsl(var(--chart-1))" },
-    { name: "Omitidas", value: adherenceData.skipped, fill: "hsl(var(--chart-2))" },
+    { name: "Puladas", value: adherenceData.skipped, fill: "hsl(var(--chart-2))" },
   ];
 
   return (
@@ -47,8 +47,8 @@ export function ReportsClient() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Doses Omitidas</CardTitle>
-            <CardDescription>Total de doses marcadas como omitidas.</CardDescription>
+            <CardTitle>Doses Puladas</CardTitle>
+            <CardDescription>Total de doses marcadas como puladas.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold font-headline">{adherenceData.skipped}</p>
@@ -59,7 +59,7 @@ export function ReportsClient() {
       <Card>
         <CardHeader>
           <CardTitle>Resumo da Adesão</CardTitle>
-          <CardDescription>Resumo visual de doses tomadas vs. omitidas.</CardDescription>
+          <CardDescription>Resumo visual de doses tomadas vs. puladas.</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>

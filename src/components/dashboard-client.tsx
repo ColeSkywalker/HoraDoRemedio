@@ -15,7 +15,7 @@ const translateStatus = (status: DoseStatus) => {
     case "taken":
       return "Tomado";
     case "skipped":
-      return "Omitido";
+      return "Não Tomado";
     case "pending":
       return "Pendente";
   }
@@ -82,7 +82,7 @@ export function DashboardClient() {
                     </CardContent>
                     <CardFooter className="flex justify-end gap-2">
                     <Button variant="outline" size="sm" onClick={() => handleUpdateStatus(dose, "skipped")}>
-                        <X className="mr-2 h-4 w-4" /> Omitir
+                        <X className="mr-2 h-4 w-4" /> Pular dose
                     </Button>
                     <Button size="sm" onClick={() => handleUpdateStatus(dose, "taken")}>
                         <Check className="mr-2 h-4 w-4" /> Tomar

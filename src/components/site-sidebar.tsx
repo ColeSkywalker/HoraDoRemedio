@@ -15,8 +15,6 @@ import {
   LayoutDashboard,
   Pill,
   BarChart3,
-  Stethoscope,
-  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +41,6 @@ export function SiteSidebar() {
     { href: "/", label: "Painel", icon: LayoutDashboard },
     { href: "/medications", label: "Medicamentos", icon: Pill },
     { href: "/reports", label: "Relatórios", icon: BarChart3 },
-    { href: "/doctor-visit", label: "Visita ao Médico", icon: Stethoscope },
   ];
 
   return (

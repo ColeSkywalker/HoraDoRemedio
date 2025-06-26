@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePillPalStore } from "@/lib/store";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Pill, Clock, MessageSquare } from "lucide-react";
+import { Plus, Pill, Clock } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +27,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -40,7 +39,6 @@ import { useToast } from "@/hooks/use-toast";
 const medicationSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
   dosage: z.string().min(1, "A dosagem é obrigatória."),
-  observations: z.string().optional(),
   frequency: z.enum(["8", "12", "24"]),
   startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:mm)."),
 });
@@ -55,7 +53,6 @@ export function MedicationsClient() {
     defaultValues: {
       name: "",
       dosage: "",
-      observations: "",
       frequency: "24",
       startTime: "08:00",
     },
@@ -65,7 +62,6 @@ export function MedicationsClient() {
     addMedication({
       ...values,
       frequency: parseInt(values.frequency, 10) as 8 | 12 | 24,
-      observations: values.observations || "",
     });
     toast({
       title: "Medicamento Adicionado",
@@ -156,19 +152,6 @@ export function MedicationsClient() {
                     )}
                     />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="observations"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Observações</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Ex: Tomar com uma refeição" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button type="button" variant="secondary">Cancelar</Button>
@@ -196,12 +179,6 @@ export function MedicationsClient() {
                     <Clock className="mr-2 h-4 w-4" />
                     <span>A cada {med.frequency} horas, começando às {med.startTime}</span>
                 </div>
-                {med.observations && (
-                    <div className="flex items-start text-sm text-muted-foreground">
-                        <MessageSquare className="mr-2 h-4 w-4 flex-shrink-0 mt-1" />
-                        <p>{med.observations}</p>
-                    </div>
-                )}
               </CardContent>
             </Card>
           ))}
