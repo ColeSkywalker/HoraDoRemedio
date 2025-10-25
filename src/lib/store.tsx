@@ -1,8 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { Medication, Dose, DoseStatus } from "./types";
-import { add, set, isToday } from "date-fns";
+import { add, set, isToday, isSameMinute } from "date-fns";
 
 // --- Mock Data (Fallback) ---
 const MOCK_MEDICATIONS: Medication[] = [
@@ -15,10 +15,13 @@ const MOCK_MEDICATIONS: Medication[] = [
 interface PillPalState {
   medications: Medication[];
   doses: Dose[];
+  notificationPermission: NotificationPermission;
   addMedication: (medication: Omit<Medication, "id">) => void;
   deleteMedication: (medicationId: string) => void;
   updateDoseStatus: (doseId: string, status: DoseStatus) => void;
   getAdherence: () => { taken: number; skipped: number; pending: number; adherenceRate: number };
+  requestNotificationPermission: () => Promise<NotificationPermission>;
+  scheduleNotifications: () => void;
 }
 
 // --- Context ---
@@ -58,6 +61,47 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [doses, setDoses] = useState<Dose[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+
+  // Check notification permission on load
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      setNotificationPermission(Notification.permission);
+    }
+  }, []);
+
+  const requestNotificationPermission = async () => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      const permission = await Notification.requestPermission();
+      setNotificationPermission(permission);
+      return permission;
+    }
+    return 'default';
+  };
+
+  const showNotification = useCallback((dose: Dose, med: Medication) => {
+    if (notificationPermission === 'granted') {
+      const title = `Hora do Remédio: ${med.name}`;
+      const options: NotificationOptions = {
+        body: `É hora de tomar sua dose de ${med.dosage}.`,
+        icon: '/icons/icon-192x192.png', 
+        badge: '/icons/icon-96x96.png',
+        vibrate: [200, 100, 200],
+      };
+      new Notification(title, options);
+    }
+  }, [notificationPermission]);
+
+  const scheduleNotifications = useCallback(() => {
+    const now = new Date();
+    doses.forEach(dose => {
+      const med = medications.find(m => m.id === dose.medicationId);
+      if (med && dose.status === 'pending' && isSameMinute(dose.scheduledTime, now)) {
+        showNotification(dose, med);
+      }
+    });
+  }, [doses, medications, showNotification]);
+
 
   // Load initial state from localStorage
   useEffect(() => {
@@ -173,10 +217,13 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     medications,
     doses,
+    notificationPermission,
     addMedication,
     deleteMedication,
     updateDoseStatus,
     getAdherence,
+    requestNotificationPermission,
+    scheduleNotifications,
   };
 
   return <PillPalContext.Provider value={value}>{isLoaded ? children : null}</PillPalContext.Provider>;
@@ -190,3 +237,5 @@ export const usePillPalStore = () => {
   }
   return context;
 };
+
+    

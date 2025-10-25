@@ -6,10 +6,11 @@ import { Medication, Dose, DoseStatus } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Clock, Pill, Plus } from "lucide-react";
+import { Check, X, Clock, Pill, Plus, BellRing, BellOff } from "lucide-react";
 import { format, isToday } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 const translateStatus = (status: DoseStatus) => {
   switch (status) {
@@ -23,8 +24,15 @@ const translateStatus = (status: DoseStatus) => {
 };
 
 export function DashboardClient() {
-  const { doses, medications, updateDoseStatus } = usePillPalStore();
+  const { doses, medications, updateDoseStatus, scheduleNotifications, notificationPermission, requestNotificationPermission } = usePillPalStore();
   const { toast } = useToast();
+  
+  useEffect(() => {
+    scheduleNotifications();
+    const interval = setInterval(scheduleNotifications, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, [scheduleNotifications]);
+
 
   const todayDoses = doses
     .filter((dose) => isToday(dose.scheduledTime))
@@ -44,9 +52,56 @@ export function DashboardClient() {
     });
   };
 
-  if (todayDoses.length === 0) {
+  const NotificationBanner = () => {
+    if (notificationPermission === 'granted') return null;
+
+    const handleRequestPermission = () => {
+      requestNotificationPermission().then(permission => {
+        if (permission === 'granted') {
+          toast({
+            title: "Notificações Ativadas!",
+            description: "Você será lembrado de suas doses.",
+          });
+        } else {
+           toast({
+            title: "Notificações Bloqueadas",
+            description: "Você precisará ativar as notificações nas configurações do seu navegador.",
+            variant: "destructive"
+          });
+        }
+      });
+    };
+
+    return (
+      <Card className="mb-6 bg-accent/50 border-accent">
+        <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-lg">
+                {notificationPermission === 'denied' ? <BellOff /> : <BellRing />}
+                Lembretes de Medicamentos
+            </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground mb-4">
+            {notificationPermission === 'denied' 
+              ? "As notificações estão bloqueadas. Para receber lembretes, por favor, ative-as nas configurações do seu navegador."
+              : "Ative as notificações para ser lembrado na hora certa de tomar seus medicamentos."}
+          </p>
+        </CardContent>
+        {notificationPermission !== 'denied' && (
+          <CardFooter>
+              <Button onClick={handleRequestPermission}>
+                  <BellRing className="mr-2" /> Ativar Notificações
+              </Button>
+          </CardFooter>
+        )}
+      </Card>
+    );
+  }
+
+  if (medications.length > 0 && todayDoses.length === 0) {
     return (
         <>
+            <NotificationBanner />
             <div className="flex flex-col items-center justify-center text-center p-12 border-2 border-dashed rounded-lg">
                 <Pill className="h-16 w-16 text-muted-foreground mb-4" />
                 <h2 className="text-2xl font-bold font-headline mb-2">Tudo limpo por hoje!</h2>
@@ -71,6 +126,7 @@ export function DashboardClient() {
 
   return (
     <>
+        <NotificationBanner />
         <div className="space-y-8">
         {upcomingDoses.length > 0 && (
             <div>
@@ -156,3 +212,5 @@ export function DashboardClient() {
     </>
   );
 }
+
+    
