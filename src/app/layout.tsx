@@ -13,6 +13,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'Hora do Remédio',
   description: 'Seu assistente pessoal de gerenciamento de medicamentos.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -29,6 +30,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet"
         />
+        <meta name="theme-color" content="#4A90E2" />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <ThemeProvider
