@@ -16,6 +16,7 @@ interface PillPalState {
   medications: Medication[];
   doses: Dose[];
   addMedication: (medication: Omit<Medication, "id">) => void;
+  deleteMedication: (medicationId: string) => void;
   updateDoseStatus: (doseId: string, status: DoseStatus) => void;
   getAdherence: () => { taken: number; skipped: number; pending: number; adherenceRate: number };
 }
@@ -140,6 +141,11 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     const newMed: Medication = { ...medication, id: new Date().toISOString() };
     setMedications(prevMeds => [...prevMeds, newMed]);
   };
+  
+  const deleteMedication = (medicationId: string) => {
+    setMedications(prevMeds => prevMeds.filter(med => med.id !== medicationId));
+    setDoses(prevDoses => prevDoses.filter(dose => dose.medicationId !== medicationId));
+  };
 
   const updateDoseStatus = (doseId: string, status: DoseStatus) => {
     setDoses(
@@ -168,6 +174,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     medications,
     doses,
     addMedication,
+    deleteMedication,
     updateDoseStatus,
     getAdherence,
   };

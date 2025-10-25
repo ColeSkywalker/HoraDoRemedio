@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { usePillPalStore } from "@/lib/store";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Pill, Clock, FileText } from "lucide-react";
+import { Plus, Pill, Clock, FileText, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,17 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -36,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { Medication } from "@/lib/types";
 
 const medicationSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
@@ -46,7 +58,7 @@ const medicationSchema = z.object({
 });
 
 export function MedicationsClient() {
-  const { medications, addMedication } = usePillPalStore();
+  const { medications, addMedication, deleteMedication } = usePillPalStore();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
@@ -72,6 +84,15 @@ export function MedicationsClient() {
     });
     form.reset();
     setIsDialogOpen(false);
+  }
+
+  function handleDelete(medication: Medication) {
+    deleteMedication(medication.id);
+    toast({
+      title: "Medicamento Removido",
+      description: `${medication.name} foi removido da sua lista.`,
+      variant: "destructive",
+    });
   }
 
   return (
@@ -205,6 +226,30 @@ export function MedicationsClient() {
                   </div>
                 )}
               </CardContent>
+              <CardFooter className="flex justify-end">
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                        <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Essa ação não pode ser desfeita. Isso removerá permanentemente o
+                            medicamento e todas as suas doses agendadas.
+                        </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleDelete(med)}>
+                            Deletar
+                        </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+              </CardFooter>
             </Card>
           ))}
         </div>
