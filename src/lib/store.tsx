@@ -22,6 +22,7 @@ interface PillPalState {
   getAdherence: () => { taken: number; skipped: number; pending: number; adherenceRate: number };
   requestNotificationPermission: () => Promise<NotificationPermission>;
   scheduleNotifications: () => void;
+  refreshDoseStatuses: () => void;
 }
 
 // --- Context ---
@@ -62,6 +63,17 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
   const [doses, setDoses] = useState<Dose[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+
+  const refreshDoseStatuses = useCallback(() => {
+    setDoses(prevDoses => 
+        prevDoses.map(dose => {
+            if (dose.status === 'pending' && dose.scheduledTime < new Date()) {
+                return { ...dose, status: 'overdue' };
+            }
+            return dose;
+        })
+    );
+  }, []);
 
   // Check notification permission on load
   useEffect(() => {
@@ -125,20 +137,20 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
             return existingDose || newDose;
         });
 
-        // Mark past pending doses as skipped automatically
+        // Mark past pending doses as overdue automatically
         mergedDoses.forEach(dose => {
           if(dose.status === 'pending' && dose.scheduledTime < new Date()){
-            dose.status = 'skipped';
+            dose.status = 'overdue';
           }
         });
 
         setDoses(mergedDoses);
 
       } else {
-         // Mark past pending doses as skipped automatically on first load
+         // Mark past pending doses as overdue automatically on first load
         todayDoses.forEach(dose => {
           if(dose.status === 'pending' && dose.scheduledTime < new Date()){
-            dose.status = Math.random() > 0.3 ? 'taken' : 'skipped';
+            dose.status = 'overdue';
           }
         });
         setDoses(todayDoses);
@@ -201,7 +213,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     const now = new Date();
     // Consider all doses from today for adherence calculation, not just past ones in the whole list
     const todayDoses = doses.filter(d => isToday(d.scheduledTime));
-    const pastDosesToday = todayDoses.filter(d => d.scheduledTime <= now);
+    const pastDosesToday = todayDoses.filter(d => d.scheduledTime <= now && (d.status === 'taken' || d.status === 'skipped'));
     
     const taken = pastDosesToday.filter(d => d.status === 'taken').length;
     const skipped = pastDosesToday.filter(d => d.status === 'skipped').length;
@@ -209,7 +221,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     const totalPast = taken + skipped;
     const adherenceRate = totalPast > 0 ? Math.round((taken / totalPast) * 100) : 100;
 
-    const pending = todayDoses.filter(d => d.status === 'pending').length;
+    const pending = todayDoses.filter(d => d.status === 'pending' || d.status === 'overdue').length;
 
     return { taken, skipped, pending, adherenceRate };
   }
@@ -224,6 +236,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     getAdherence,
     requestNotificationPermission,
     scheduleNotifications,
+    refreshDoseStatuses,
   };
 
   return <PillPalContext.Provider value={value}>{isLoaded ? children : null}</PillPalContext.Provider>;
@@ -237,5 +250,3 @@ export const usePillPalStore = () => {
   }
   return context;
 };
-
-    
