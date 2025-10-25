@@ -10,7 +10,8 @@ import { Check, X, Clock, Pill, Plus, BellRing, BellOff, AlertTriangle } from "l
 import { format, isToday } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 const translateStatus = (status: DoseStatus) => {
   switch (status) {
@@ -28,8 +29,12 @@ const translateStatus = (status: DoseStatus) => {
 export function DashboardClient() {
   const { doses, medications, updateDoseStatus, scheduleNotifications, notificationPermission, requestNotificationPermission, refreshDoseStatuses } = usePillPalStore();
   const { toast } = useToast();
+  const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
+    // This runs only on the client, after hydration
+    setIsClient(true);
+    
     // Refresh statuses on mount and then every minute
     refreshDoseStatuses();
     const statusInterval = setInterval(refreshDoseStatuses, 60000);
@@ -109,6 +114,27 @@ export function DashboardClient() {
     );
   }
 
+  // Loading Skeleton
+  if (!isClient) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold font-headline mb-4"><Skeleton className="h-8 w-48" /></h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <Skeleton className="h-48 rounded-lg" />
+            <Skeleton className="h-48 rounded-lg" />
+          </div>
+        </div>
+         <div>
+          <h2 className="text-2xl font-bold font-headline mb-4"><Skeleton className="h-8 w-64" /></h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <Skeleton className="h-40 rounded-lg" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   if (medications.length > 0 && todayDoses.length === 0) {
     return (
         <>
