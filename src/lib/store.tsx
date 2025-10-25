@@ -102,6 +102,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     const now = new Date();
     doses.forEach(dose => {
       const med = medications.find(m => m.id === dose.medicationId);
+      // Ensure we only notify for pending doses
       if (med && dose.status === 'pending' && isSameMinute(dose.scheduledTime, now)) {
         showNotification(dose, med);
       }
