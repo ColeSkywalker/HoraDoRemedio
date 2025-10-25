@@ -81,6 +81,7 @@ export function MedicationsClient() {
     toast({
       title: "Medicamento Adicionado",
       description: `${values.name} foi adicionado à sua lista.`,
+      duration: 3000,
     });
     form.reset();
     setIsDialogOpen(false);
@@ -92,6 +93,7 @@ export function MedicationsClient() {
       title: "Medicamento Removido",
       description: `${medication.name} foi removido da sua lista.`,
       variant: "destructive",
+      duration: 3000,
     });
   }
 
