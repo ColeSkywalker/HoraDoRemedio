@@ -18,19 +18,10 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
-const PillIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className="h-8 w-8 text-primary"
-  >
-    <path
-      fillRule="evenodd"
-      d="M11.025 2.293a2.25 2.25 0 0 1 1.95 0l6.75 4.125a2.25 2.25 0 0 1 1.125 1.95v8.25a2.25 2.25 0 0 1-1.125 1.95l-6.75 4.125a2.25 2.25 0 0 1-1.95 0l-6.75-4.125a2.25 2.25 0 0 1-1.125-1.95v-8.25a2.25 2.25 0 0 1 1.125-1.95l6.75-4.125ZM12 1.5a.75.75 0 0 1 .65.383l6.75 4.125a.75.75 0 0 1 .375.65v8.25a.75.75 0 0 1-.375.65l-6.75 4.125a.75.75 0 0 1-.65.383.75.75 0 0 1-.65-.383l-6.75-4.125a.75.75 0 0 1-.375-.65v-8.25a.75.75 0 0 1 .375-.65l6.75-4.125A.75.75 0 0 1 12 1.5Z"
-      clipRule="evenodd"
-    />
-  </svg>
+const HRIcon = () => (
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+        <span className="font-bold text-sm text-primary-foreground">HR</span>
+    </div>
 );
 
 
@@ -47,7 +38,7 @@ export function SiteSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-            <PillIcon />
+            <HRIcon />
             <h1 className="text-xl font-headline font-bold">Hora do Remédio</h1>
         </div>
       </SidebarHeader>
