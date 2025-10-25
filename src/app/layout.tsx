@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
+const faviconSvg = `
+<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+  <rect width=%22100%22 height=%22100%22 rx=%2220%22 ry=%2220%22 fill=%22hsl(196 30% 45%)%22></rect>
+  <text x=%2250%22 y=%2255%22 font-size=%2250%22 font-family=%22sans-serif%22 font-weight=%22bold%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 fill=%22white%22>HR</text>
+</svg>
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <link rel="icon" href={`data:image/svg+xml,${faviconSvg}`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
