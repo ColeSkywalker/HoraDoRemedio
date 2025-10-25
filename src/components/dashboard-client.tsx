@@ -121,7 +121,7 @@ export function DashboardClient() {
             <Link href="/medications" passHref>
                 <Button
                 aria-label="Adicionar Medicamento"
-                className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-40"
+                className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-10"
                 size="icon"
                 >
                 <Plus className="h-8 w-8" />
@@ -253,7 +253,7 @@ export function DashboardClient() {
         <Link href="/medications" passHref>
             <Button
                 aria-label="Adicionar Medicamento"
-                className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-40"
+                className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-10"
                 size="icon"
             >
                 <Plus className="h-8 w-8" />
