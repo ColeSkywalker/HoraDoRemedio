@@ -6,7 +6,7 @@ import { Medication, Dose, DoseStatus } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Clock, Pill, Plus, BellRing, BellOff, AlertTriangle } from "lucide-react";
+import { Check, X, Clock, Pill, Plus, BellRing, BellOff } from "lucide-react";
 import { format, isToday } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -21,8 +21,6 @@ const translateStatus = (status: DoseStatus) => {
       return "Pulado";
     case "pending":
       return "Pendente";
-    case "overdue":
-        return "Atrasado";
   }
 };
 
@@ -159,7 +157,6 @@ export function DashboardClient() {
   }
 
   const upcomingDoses = todayDoses.filter(d => d.status === 'pending');
-  const overdueDoses = todayDoses.filter(d => d.status === 'overdue');
   const pastDoses = todayDoses.filter(d => d.status === 'taken' || d.status === 'skipped');
 
 
@@ -167,43 +164,6 @@ export function DashboardClient() {
     <>
         <NotificationBanner />
         <div className="space-y-8">
-        
-        {overdueDoses.length > 0 && (
-            <div>
-                <h2 className="text-2xl font-bold font-headline mb-4 text-destructive">Doses Atrasadas</h2>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {overdueDoses.map((dose) => {
-                    const med = getMedicationById(dose.medicationId);
-                    if (!med) return null;
-                    return (
-                    <Card key={dose.id} className="border-destructive bg-destructive/10 transition-all hover:shadow-md">
-                        <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-destructive">
-                            <AlertTriangle/>
-                            {med.name}
-                        </CardTitle>
-                        <CardDescription>{med.dosage}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                        <div className="flex items-center gap-2 text-destructive/80">
-                            <Clock className="h-4 w-4" />
-                            <span>Agendado para {format(dose.scheduledTime, "p")}</span>
-                        </div>
-                        </CardContent>
-                        <CardFooter className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" onClick={() => handleUpdateStatus(dose, "skipped")}>
-                            <X className="mr-2 h-4 w-4" /> Pular dose
-                        </Button>
-                        <Button size="sm" variant="destructive" onClick={() => handleUpdateStatus(dose, "taken")}>
-                            <Check className="mr-2 h-4 w-4" /> Tomar agora
-                        </Button>
-                        </CardFooter>
-                    </Card>
-                    );
-                })}
-                </div>
-            </div>
-        )}
 
         {upcomingDoses.length > 0 && (
             <div>

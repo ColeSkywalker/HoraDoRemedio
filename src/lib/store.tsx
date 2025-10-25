@@ -65,14 +65,8 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
 
   const refreshDoseStatuses = useCallback(() => {
-    setDoses(prevDoses => 
-        prevDoses.map(dose => {
-            if (dose.status === 'pending' && dose.scheduledTime < new Date()) {
-                return { ...dose, status: 'overdue' };
-            }
-            return dose;
-        })
-    );
+    // This function can be expanded later if needed, for now it does nothing.
+    // Kept for consistency with the original structure that had it.
   }, []);
 
   // Check notification permission on load
@@ -137,22 +131,9 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
             return existingDose || newDose;
         });
 
-        // Mark past pending doses as overdue automatically
-        mergedDoses.forEach(dose => {
-          if(dose.status === 'pending' && dose.scheduledTime < new Date()){
-            dose.status = 'overdue';
-          }
-        });
-
         setDoses(mergedDoses);
 
       } else {
-         // Mark past pending doses as overdue automatically on first load
-        todayDoses.forEach(dose => {
-          if(dose.status === 'pending' && dose.scheduledTime < new Date()){
-            dose.status = 'overdue';
-          }
-        });
         setDoses(todayDoses);
       }
 
@@ -221,7 +202,7 @@ export const PillPalStoreProvider = ({ children }: { children: ReactNode }) => {
     const totalPast = taken + skipped;
     const adherenceRate = totalPast > 0 ? Math.round((taken / totalPast) * 100) : 100;
 
-    const pending = todayDoses.filter(d => d.status === 'pending' || d.status === 'overdue').length;
+    const pending = todayDoses.filter(d => d.status === 'pending').length;
 
     return { taken, skipped, pending, adherenceRate };
   }

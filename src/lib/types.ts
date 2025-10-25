@@ -9,7 +9,7 @@ export interface Medication {
   observations?: string;
 }
 
-export type DoseStatus = "taken" | "skipped" | "pending" | "overdue";
+export type DoseStatus = "taken" | "skipped" | "pending";
 
 export interface Dose {
   id: string;
