@@ -46,8 +46,9 @@ export function SiteSidebar() {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.label}>
-              <Link href={item.href} passHref>
+              <Link href={item.href} legacyBehavior passHref>
                 <SidebarMenuButton
+                  as="a"
                   className="font-semibold"
                   isActive={pathname === item.href}
                   tooltip={item.label}
